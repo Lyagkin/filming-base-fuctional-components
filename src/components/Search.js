@@ -1,87 +1,78 @@
-import { Component } from "react";
+import { useState } from "react";
 
-export default class Search extends Component {
-  state = {
-    searchString: "",
-    filter: "",
-  };
+export default function Search({ searchFilmByName }) {
+  const [searchString, setSearchString] = useState("");
+  const [filter, setFilter] = useState("");
 
-  setSearchInputValueInState = (e) => {
-    if (e.target.value === "series" || e.target.value === "movie") {
-      this.setState({
-        [e.target.name]: `&type=${e.target.value}`,
-      });
-    } else if (e.target.value === "all") {
-      this.setState({
-        [e.target.name]: "",
-      });
+  const setEventTargetNameInState = (e, state, str) => {
+    const name = e.target.name;
+
+    if (name === state) {
+      setSearchString(str);
     } else {
-      this.setState({
-        [e.target.name]: e.target.value,
-      });
+      setFilter(str);
     }
   };
 
-  onKeyPressSearh = (e) => {
+  const setSearchInputValueInState = (e) => {
+    if (e.target.value === "series" || e.target.value === "movie") {
+      setEventTargetNameInState(e, searchString, `&type=${e.target.value}`);
+    } else if (e.target.value === "all") {
+      setEventTargetNameInState(e, searchString, "");
+    } else {
+      setSearchString(e.target.value);
+    }
+  };
+
+  const onKeyPressSearh = (e) => {
     if (e.code === "Enter") {
-      console.log("press");
-      this.props.searchFilmByName(this.state.searchString, this.state.filter);
+      searchFilmByName(searchString, filter);
     }
   };
 
-  render() {
-    const { searchString, filter } = this.state;
-
-    return (
-      <div className="row">
-        <div className="input-field col s12">
-          <input
-            id="search"
-            type="search"
-            className="validate"
-            placeholder="Search"
-            name="searchString"
-            value={searchString}
-            onChange={this.setSearchInputValueInState}
-            onKeyDown={this.onKeyPressSearh}
-          />
-          <button onClick={() => this.props.searchFilmByName(searchString, filter)} className="buttonSearch">
-            Search
-          </button>
-          <div className="inputRadio">
-            <label>
-              <input
-                className="with-gap"
-                name="filter"
-                value="all"
-                type="radio"
-                onChange={this.setSearchInputValueInState}
-              />
-              <span>All</span>
-            </label>
-            <label>
-              <input
-                className="with-gap"
-                name="filter"
-                value="movie"
-                type="radio"
-                onChange={this.setSearchInputValueInState}
-              />
-              <span>Movie</span>
-            </label>
-            <label>
-              <input
-                className="with-gap"
-                name="filter"
-                value="series"
-                type="radio"
-                onChange={this.setSearchInputValueInState}
-              />
-              <span>Series</span>
-            </label>
-          </div>
+  return (
+    <div className="row">
+      <div className="input-field col s12">
+        <input
+          id="search"
+          type="search"
+          className="validate"
+          placeholder="Search"
+          name="searchString"
+          value={searchString}
+          onChange={setSearchInputValueInState}
+          onKeyDown={onKeyPressSearh}
+        />
+        <button onClick={() => searchFilmByName(searchString, filter)} className="buttonSearch">
+          Search
+        </button>
+        <div className="inputRadio">
+          <label>
+            <input className="with-gap" name="filter" value="all" type="radio" onChange={setSearchInputValueInState} />
+            <span>All</span>
+          </label>
+          <label>
+            <input
+              className="with-gap"
+              name="filter"
+              value="movie"
+              type="radio"
+              onChange={setSearchInputValueInState}
+            />
+            <span>Movie</span>
+          </label>
+          <label>
+            <input
+              className="with-gap"
+              name="filter"
+              value="series"
+              type="radio"
+              onChange={setSearchInputValueInState}
+            />
+            <span>Series</span>
+          </label>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
