@@ -13,7 +13,7 @@ export default function Main() {
   const firstRequestingFilmRef = useRef("die hard");
 
   useEffect(() => {
-    onRequest(`http://www.omdbapi.com/?apikey=4cbfd252&s`, firstRequestingFilmRef.current);
+    onRequest(`https://www.omdbapi.com/?apikey=4cbfd252&s`, firstRequestingFilmRef.current);
   }, []);
 
   const onLoad = () => {
@@ -48,7 +48,7 @@ export default function Main() {
     } else {
       onLoad();
       onError();
-      onRequest(`http://www.omdbapi.com/?apikey=${API_KEY}&s`, name, filter);
+      onRequest(`https://www.omdbapi.com/?apikey=4cbfd252&s`, name, filter);
     }
   };
 
